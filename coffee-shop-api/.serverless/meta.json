@@ -1,0 +1,215 @@
+{
+  "C:\\Users\\djkon\\OneDrive\\Documents\\GitHub\\coffee-shop-crud-api-node-js-project\\coffee-shop-api\\serverless.yml": {
+    "versionFramework": "4.18.0",
+    "servicePath": "C:\\Users\\djkon\\OneDrive\\Documents\\GitHub\\coffee-shop-crud-api-node-js-project\\coffee-shop-api\\serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "coffee-shop-api",
+      "frameworkVersion": "4",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs20.x",
+        "region": "us-east-1",
+        "stage": "prod",
+        "iam": {
+          "role": {
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:Scan",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:DeleteItem"
+                ],
+                "Resource": "arn:aws:dynamodb:us-east-1:*:table/CoffeeOrders-prod"
+              }
+            ]
+          }
+        },
+        "versionFunctions": true
+      },
+      "functions": {
+        "createCoffee": {
+          "handler": "createCoffee.handler",
+          "environment": {
+            "COFFEE_ORDERS_TABLE": "CoffeeOrders-prod"
+          },
+          "events": [
+            {
+              "http": {
+                "path": "coffee",
+                "method": "post"
+              }
+            }
+          ],
+          "name": "coffee-shop-api-prod-createCoffee"
+        },
+        "getCoffee": {
+          "handler": "getCoffee.handler",
+          "environment": {
+            "COFFEE_ORDERS_TABLE": "CoffeeOrders-prod"
+          },
+          "events": [
+            {
+              "http": {
+                "path": "coffee",
+                "method": "get"
+              }
+            }
+          ],
+          "name": "coffee-shop-api-prod-getCoffee"
+        },
+        "updateCoffee": {
+          "handler": "updateCoffee.handler",
+          "environment": {
+            "COFFEE_ORDERS_TABLE": "CoffeeOrders-prod"
+          },
+          "events": [
+            {
+              "http": {
+                "path": "coffee",
+                "method": "put"
+              }
+            }
+          ],
+          "name": "coffee-shop-api-prod-updateCoffee"
+        },
+        "deleteCoffee": {
+          "handler": "deleteCoffee.handler",
+          "environment": {
+            "COFFEE_ORDERS_TABLE": "CoffeeOrders-prod"
+          },
+          "events": [
+            {
+              "http": {
+                "path": "coffee",
+                "method": "delete"
+              }
+            }
+          ],
+          "name": "coffee-shop-api-prod-deleteCoffee"
+        }
+      },
+      "resources": {
+        "Resources": {
+          "CoffeeTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "CoffeeOrders-prod",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "OrderId",
+                  "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "CustomerName",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "OrderId",
+                  "KeyType": "HASH"
+                },
+                {
+                  "AttributeName": "CustomerName",
+                  "KeyType": "RANGE"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST"
+            }
+          }
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs20.x",
+      "region": "us-east-1",
+      "stage": "prod",
+      "iam": {
+        "role": {
+          "statements": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+              ],
+              "Resource": "arn:aws:dynamodb:us-east-1:*:table/CoffeeOrders-prod"
+            }
+          ]
+        }
+      },
+      "versionFunctions": true
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "serviceRawFile": "service: coffee-shop-api\nframeworkVersion: '4'\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: us-east-1\n  stage: ${opt:stage}\n  iam:\n    role:\n      statements:\n        - Effect: Allow\n          Action:\n            - dynamodb:PutItem\n            - dynamodb:GetItem\n            - dynamodb:Scan\n            - dynamodb:UpdateItem\n            - dynamodb:DeleteItem\n          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/CoffeeOrders-${self:provider.stage}\n\nfunctions:\n  createCoffee:\n    handler: createCoffee.handler\n    environment:\n      COFFEE_ORDERS_TABLE: CoffeeOrders-${self:provider.stage}\n    events:\n      - http:\n          path: coffee\n          method: post\n  \n  getCoffee:\n    handler: getCoffee.handler\n    environment:\n      COFFEE_ORDERS_TABLE: CoffeeOrders-${self:provider.stage}\n    events:\n      - http:\n          path: coffee\n          method: get\n  \n  updateCoffee:\n    handler: updateCoffee.handler\n    environment:\n      COFFEE_ORDERS_TABLE: CoffeeOrders-${self:provider.stage}\n    events:\n      - http:  \n          path: coffee  \n          method: put  \n  \n  deleteCoffee:  \n    handler: deleteCoffee.handler\n    environment:\n      COFFEE_ORDERS_TABLE: CoffeeOrders-${self:provider.stage}\n    events:\n      - http:\n          path: coffee\n          method: delete\nresources:\n  Resources:\n    CoffeeTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: CoffeeOrders-${self:provider.stage}\n        AttributeDefinitions:\n          - AttributeName: OrderId\n            AttributeType: S\n          - AttributeName: CustomerName\n            AttributeType: S\n        KeySchema:\n          - AttributeName: OrderId\n            KeyType: HASH\n          - AttributeName: CustomerName\n            KeyType: RANGE\n        BillingMode: PAY_PER_REQUEST",
+    "command": [
+      "remove"
+    ],
+    "options": {
+      "stage": "prod"
+    },
+    "orgId": "608fe50d-c7e7-414e-9654-7db59eacb730",
+    "orgName": "fahmacloud",
+    "userId": "my0yrsfPts3JW4BqG1",
+    "userName": "fahmacloud",
+    "serviceProviderAwsAccountId": "822070281492",
+    "serviceProviderAwsCfStackName": "coffee-shop-api-prod",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:822070281492:stack/coffee-shop-api-prod/95e6a6e0-78aa-11f0-92ce-122753585a8b",
+    "serviceProviderAwsCfStackCreated": "2025-08-14T01:04:10.454Z",
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": "CREATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "GetCoffeeLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:822070281492:function:coffee-shop-api-prod-getCoffee:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-coffee-shop-api-prod-GetCoffeeLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "CreateCoffeeLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:822070281492:function:coffee-shop-api-prod-createCoffee:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-coffee-shop-api-prod-CreateCoffeeLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "DeleteCoffeeLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:822070281492:function:coffee-shop-api-prod-deleteCoffee:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-coffee-shop-api-prod-DeleteCoffeeLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServiceEndpoint",
+        "OutputValue": "https://ktgo50wps7.execute-api.us-east-1.amazonaws.com/prod",
+        "Description": "URL of the service endpoint",
+        "ExportName": "sls-coffee-shop-api-prod-ServiceEndpoint"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-us-east-1-5c463eb6-b5b5",
+        "ExportName": "sls-coffee-shop-api-prod-ServerlessDeploymentBucketName"
+      },
+      {
+        "OutputKey": "UpdateCoffeeLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:822070281492:function:coffee-shop-api-prod-updateCoffee:1",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-coffee-shop-api-prod-UpdateCoffeeLambdaFunctionQualifiedArn"
+      }
+    ]
+  }
+}

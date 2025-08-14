@@ -36,7 +36,7 @@ I’ll build a Coffee Shop API to manage orders, inventory, and customer request
  
 ## Step 0 – Clone the Repository
 
-Clone the project from GitHub and review the included files—you’ll use them to build the Coffee Shop API.
+Clone the project from GitHub and review the included files. You’ll use them to build the Coffee Shop API.
 
  
 

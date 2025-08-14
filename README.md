@@ -141,8 +141,10 @@ Verify each operation by checking DynamoDB tables for the correct environment.
 
 Voila! **You’ve now built and automated a fully serverless CRUD REST API** for a coffee shop, using AWS Lambda, API Gateway, DynamoDB, Serverless Framework, and GitHub Actions—scalable, cost-efficient, and maintenance-free.
 
-<!--  Find the detailed tutorial, with screenshot and tips, on my website: [Automating a Serverless CRUD REST API with Node.js](https://cloudwithdj.com/automating-a-serverless-crud-rest-api-with-node-js/)
--->
+<!--  -->
+
+Find the detailed tutorial, with screenshot and tips, on my website: [Automating a Serverless CRUD REST API with Node.js](https://cloudwithdj.com/automating-a-serverless-crud-rest-api-with-node-js/)
+
 
 
 ![Read the blog](image-1.png)
